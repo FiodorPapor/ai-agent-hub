@@ -4,7 +4,7 @@
   "description": "Frontend for AI Agent Service Hub",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NEXT_PUBLIC_BACKEND_URL=http://localhost:3004 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

@@ -57,9 +57,9 @@ export async function executeTranslateAgent(
   const lang = targetLanguage.toLowerCase();
   const lowerText = text.toLowerCase();
 
-  // Find matching translation or use default
-  let translation = mockTranslations[lang]?.default || 'Translation not available for this language.';
-
+  // Try to find matching translation for known phrases
+  let translation = null;
+  
   if (mockTranslations[lang]) {
     for (const [key, value] of Object.entries(mockTranslations[lang])) {
       if (key !== 'default' && lowerText.includes(key)) {
@@ -67,6 +67,34 @@ export async function executeTranslateAgent(
         break;
       }
     }
+  }
+
+  // If no exact phrase match, translate the whole text word by word
+  if (!translation) {
+    const words = text.split(/\s+/);
+    const translatedWords = words.map(word => {
+      const lowerWord = word.toLowerCase();
+      const langDict = mockTranslations[lang];
+      
+      // Check if word or phrase exists in dictionary
+      if (langDict) {
+        for (const [key, value] of Object.entries(langDict)) {
+          if (key !== 'default' && lowerWord.includes(key)) {
+            return value;
+          }
+        }
+      }
+      
+      // Return original word if no translation found
+      return word;
+    });
+    
+    translation = translatedWords.join(' ');
+  }
+
+  // Fallback if language not supported
+  if (!translation) {
+    translation = mockTranslations[lang]?.default || `[${lang}] ${text}`;
   }
 
   const wordCount = text.split(/\s+/).length;

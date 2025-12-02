@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { createAgentRoutes } from './routes/agents.js';
+import { createAgentRoutes } from './routes/agents';
 
 // Load environment variables
 dotenv.config();

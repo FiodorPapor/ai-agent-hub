@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "description": "Backend for AI Agent Service Hub with x402 payment integration",
   "main": "dist/index.js",
-  "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsc && BACKEND_PORT=3004 node dist/index.js",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,6 +21,6 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.10.0",
     "typescript": "^5.3.3",
-    "tsx": "^4.7.0"
+    "tsx": "^4.17.0"
   }
 }

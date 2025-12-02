@@ -78,8 +78,10 @@ export default function PaymentFlow({ flow }: PaymentFlowProps) {
                 className={`w-5 h-5 flex-shrink-0 ${
                   isCompleted
                     ? 'text-green-400'
-                    : isActive
+                    : isActive && step.icon === Loader
                     ? 'text-blue-400 animate-spin'
+                    : isActive
+                    ? 'text-blue-400'
                     : 'text-slate-500'
                 }`}
               />

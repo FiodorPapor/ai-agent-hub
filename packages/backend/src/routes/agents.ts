@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { x402Middleware, generateMockTxHash } from '../middleware/x402.js';
-import { executeResearchAgent } from '../agents/researchAgent.js';
-import { executeSummaryAgentWithMock } from '../agents/summaryAgent.js';
-import { executeTranslateAgent } from '../agents/translateAgent.js';
-import { executeCodeReviewAgent } from '../agents/codeReviewAgent.js';
+import { x402Middleware, generateMockTxHash } from '../middleware/x402';
+import { executeResearchAgent } from '../agents/researchAgent';
+import { executeSummaryAgentWithMock } from '../agents/summaryAgent';
+import { executeTranslateAgent } from '../agents/translateAgent';
+import { executeCodeReviewAgent } from '../agents/codeReviewAgent';
 
 export function createAgentRoutes(
   walletAddress: string,
