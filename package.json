@@ -1,7 +1,7 @@
 {
-  "name": "ai-agent-hub",
-  "version": "0.1.0",
-  "description": "AI Agent Service Hub - Marketplace where AI agents sell services via x402 micropayments on Avalanche",
+  "name": "universal-agent-wallet",
+  "version": "1.0.0",
+  "description": "Universal payment layer for AI agents and tools - x402 micropayments on Avalanche",
   "private": true,
   "workspaces": [
     "packages/backend",

@@ -1,7 +1,7 @@
 {
-  "name": "ai-agent-hub-frontend",
-  "version": "0.1.0",
-  "description": "Frontend for AI Agent Service Hub",
+  "name": "universal-agent-wallet-frontend",
+  "version": "1.0.0",
+  "description": "Universal payment layer frontend for AI agents and tools",
   "private": true,
   "scripts": {
     "dev": "NEXT_PUBLIC_BACKEND_URL=http://localhost:3004 next dev",
@@ -10,19 +10,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.12",
+    "axios": "^1.6.2",
+    "lucide-react": "^0.294.0",
+    "next": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "next": "^14.0.0",
-    "axios": "^1.6.2",
-    "lucide-react": "^0.294.0"
+    "viem": "^2.41.2",
+    "wagmi": "^2.19.5"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
+    "@types/node": "^20.10.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-    "@types/node": "^20.10.0",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.6"
+    "tailwindcss": "^3.3.6",
+    "typescript": "^5.3.3"
   }
 }

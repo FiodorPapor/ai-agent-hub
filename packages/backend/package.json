@@ -1,7 +1,7 @@
 {
-  "name": "ai-agent-hub-backend",
-  "version": "0.1.0",
-  "description": "Backend for AI Agent Service Hub with x402 payment integration",
+  "name": "universal-agent-wallet-backend",
+  "version": "1.0.0",
+  "description": "Universal payment layer for AI agents and tools",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsc && BACKEND_PORT=3004 node dist/index.js",

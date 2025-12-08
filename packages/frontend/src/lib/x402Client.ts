@@ -1,4 +1,13 @@
 import axios, { AxiosInstance } from 'axios';
+import { 
+  getWalletState, 
+  sendTransaction, 
+  waitForTransaction, 
+  priceToWei, 
+  PAYMENT_RECEIVER_ADDRESS,
+  type WalletState,
+  type TransactionResult 
+} from './walletUtils';
 
 export interface Agent {
   id: string;
@@ -9,7 +18,7 @@ export interface Agent {
 }
 
 export interface PaymentFlow {
-  status: 'idle' | 'requesting' | 'payment_required' | 'signing' | 'confirmed' | 'completed' | 'error';
+  status: 'idle' | 'requesting' | 'payment_required' | 'signing' | 'confirmed' | 'completed' | 'error' | 'wallet_check';
   message: string;
   paymentDetails?: {
     amount: string;
@@ -19,6 +28,8 @@ export interface PaymentFlow {
   };
   result?: any;
   error?: string;
+  transaction?: TransactionResult;
+  walletState?: WalletState;
 }
 
 class X402Client {
@@ -46,13 +57,38 @@ class X402Client {
   async callAgent(
     agentId: string,
     params: Record<string, any>,
-    onStatusChange?: (flow: PaymentFlow) => void
+    onStatusChange?: (flow: PaymentFlow) => void,
+    useRealPayment: boolean = true
   ): Promise<any> {
     const flow: PaymentFlow = {
-      status: 'requesting',
-      message: 'Requesting service...',
+      status: 'wallet_check',
+      message: 'Checking wallet connection...',
     };
 
+    if (onStatusChange) onStatusChange(flow);
+
+    // Check wallet state first
+    const walletState = await getWalletState();
+    flow.walletState = walletState;
+
+    if (!walletState.isConnected) {
+      flow.status = 'error';
+      flow.error = 'Wallet not connected';
+      flow.message = 'Please connect your wallet first';
+      if (onStatusChange) onStatusChange(flow);
+      throw new Error('Wallet not connected');
+    }
+
+    if (!walletState.isCorrectNetwork) {
+      flow.status = 'error';
+      flow.error = 'Wrong network';
+      flow.message = 'Please switch to Avalanche Fuji network';
+      if (onStatusChange) onStatusChange(flow);
+      throw new Error('Wrong network');
+    }
+
+    flow.status = 'requesting';
+    flow.message = 'Requesting service...';
     if (onStatusChange) onStatusChange(flow);
 
     try {
@@ -107,20 +143,73 @@ class X402Client {
 
           if (onStatusChange) onStatusChange(flow);
 
-          // Simulate payment signing
-          flow.status = 'signing';
-          flow.message = 'Signing transaction...';
-          if (onStatusChange) onStatusChange(flow);
+          let paymentHeader = 'mock-payment-signature'; // Fallback
 
-          // Simulate payment delay
-          await new Promise(resolve => setTimeout(resolve, 1500));
+          if (useRealPayment && walletState.address) {
+            try {
+              // Real payment flow
+              flow.status = 'signing';
+              flow.message = 'Please sign the transaction in your wallet...';
+              if (onStatusChange) onStatusChange(flow);
 
-          // Simulate payment confirmation
-          flow.status = 'confirmed';
-          flow.message = 'Payment confirmed! Processing request...';
-          if (onStatusChange) onStatusChange(flow);
+              // Convert price to wei and send transaction
+              const valueInWei = priceToWei(paymentInfo.amount);
+              const transaction = await sendTransaction(
+                PAYMENT_RECEIVER_ADDRESS,
+                valueInWei,
+                walletState.address
+              );
 
-          // Retry with mock payment header
+              flow.transaction = transaction;
+              flow.status = 'confirmed';
+              flow.message = 'Transaction sent! Waiting for confirmation...';
+              if (onStatusChange) onStatusChange(flow);
+
+              // Wait for transaction confirmation
+              const confirmed = await waitForTransaction(transaction.hash);
+              
+              if (confirmed) {
+                paymentHeader = JSON.stringify({
+                  txHash: transaction.hash,
+                  from: transaction.from,
+                  to: transaction.to,
+                  value: transaction.value,
+                  timestamp: transaction.timestamp,
+                  network: 'avalanche-fuji'
+                });
+                
+                flow.message = 'Payment confirmed! Processing request...';
+              } else {
+                throw new Error('Transaction confirmation failed');
+              }
+            } catch (paymentError: any) {
+              console.error('Real payment failed, falling back to mock:', paymentError);
+              
+              // Fallback to mock payment
+              flow.status = 'signing';
+              flow.message = 'Real payment failed, using mock payment for demo...';
+              if (onStatusChange) onStatusChange(flow);
+              
+              await new Promise(resolve => setTimeout(resolve, 1500));
+              
+              flow.status = 'confirmed';
+              flow.message = 'Mock payment confirmed! Processing request...';
+              if (onStatusChange) onStatusChange(flow);
+            }
+          } else {
+            // Mock payment flow (fallback)
+            flow.status = 'signing';
+            flow.message = 'Signing mock transaction...';
+            if (onStatusChange) onStatusChange(flow);
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            flow.status = 'confirmed';
+            flow.message = 'Mock payment confirmed! Processing request...';
+            if (onStatusChange) onStatusChange(flow);
+          }
+
+          // Retry request with payment header
           await new Promise(resolve => setTimeout(resolve, 1000));
 
           const retryResponse = await this.client({
@@ -128,7 +217,7 @@ class X402Client {
             url: endpoint,
             data,
             headers: {
-              'x-payment': 'mock-payment-signature',
+              'x-payment': paymentHeader,
             },
           });
 

@@ -1,530 +1,363 @@
-# AI Agent Service Hub
+# Universal Agent Wallet
 
-> A marketplace where AI agents sell services to each other and humans via x402 micropayments on Avalanche.
+> **🔄 Pivot Notice:** This project evolved from "AI Agent Service Hub" (closed marketplace) 
+> to "Universal Agent Wallet" (open payment infrastructure) during Hack2Build x402.
 
-**Network:** Avalanche Fuji Testnet
+## Why the Pivot?
 
-## 🎯 Problem
+| Before | After |
+|--------|-------|
+| Marketplace where our agents pay our agents | SDK that ANY system can use |
+| Limited to 4 built-in agents | Works with Claude MCP, Telegram, Python, etc. |
+| Closed ecosystem | Universal infrastructure |
 
-In 2025, 79% of companies use AI agents. But agents can't pay each other efficiently:
-- Traditional payments cost $25-50 per transaction
-- Micropayments ($0.01-$0.10) are economically impossible
-- No standardized protocol for agent-to-agent commerce
+**The real gap isn't another agent marketplace — it's payment infrastructure for the entire AI ecosystem.**
 
-## 💡 Solution
+---
 
-**AI Agent Service Hub** enables autonomous agent-to-agent commerce through the **x402 protocol**:
-- Research Agent finds data for **$0.02**
-- Summary Agent summarizes for **$0.01**
-- Translation Agent translates for **$0.01**
-- Code Review Agent reviews for **$0.05**
+**Universal payment layer for any AI system** — Claude MCP, Telegram bots, Python scripts, n8n workflows, and more.
 
-All payments are **instant**, **automatic**, and cost **near-zero**.
+Transform any HTTP API into a paid service with x402 micropayments on Avalanche. One SDK works everywhere.
 
-## 👥 Team
+## 🚀 Quick Start
 
-**Fiodor Papor** — Full-stack Developer & Founder
-- Experience in Web3, blockchain, and AI integration
-- GitHub: https://github.com/FiodorPapor
-- Passionate about building infrastructure for autonomous agent economies
+```bash
+# Install the SDK
+npm install universal-agent-wallet
+# or
+pip install universal-agent-wallet
+```
 
-## 👤 User Persona
+```javascript
+// JavaScript/TypeScript
+import { UniversalWallet } from 'universal-agent-wallet';
 
-### Primary User: AI/Web3 Developer
-- **Age/Role**: 25-40, Software Engineer or AI Engineer
-- **Goals**: 
-  - Build AI-powered applications with monetization
-  - Integrate AI agents into existing systems
-  - Reduce payment processing overhead
-- **Pain Points**:
-  - High payment processing fees ($25-50 per transaction)
-  - Micropayments economically impossible with traditional systems
-  - No standardized protocol for agent-to-agent commerce
-  - Complex integration with multiple payment providers
-- **Tech Stack**: Node.js, Python, TypeScript, Web3 libraries
-- **Motivation**: Save costs, enable new business models, simplify integration
+const wallet = UniversalWallet.connect();
+const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
+  method: 'POST',
+  body: JSON.stringify({ url: 'https://example.com' })
+});
+```
 
-### Secondary User: Enterprise with AI Agents
-- **Organization**: Mid-to-large company deploying autonomous AI systems
-- **Goals**:
-  - Deploy autonomous agent networks
-  - Enable agent-to-agent collaboration
-  - Maintain audit trail of all transactions
-- **Pain Points**:
-  - Lack of infrastructure for agent payments
-  - Regulatory compliance requirements
-  - Need for instant settlement
-- **Requirements**: Scalability, security, auditability, compliance
+```python
+# Python
+from universal_agent_wallet import UniversalWallet
 
-## 🚶 User Journey
+wallet = UniversalWallet.connect()
+result = wallet.call_paid_api('http://localhost:3004/api/summarize', 
+                             json={'url': 'https://example.com'})
+```
 
-### Developer Onboarding (5 minutes)
-1. **Discover**: Developer finds AI Agent Service Hub on GitHub
-2. **Understand**: Reads README and understands x402 protocol
-3. **Setup**: Clones repo, runs `pnpm install`
-4. **Test**: Starts backend and frontend locally
-5. **Explore**: Opens http://localhost:3000, clicks on agents
+## 🎯 What It Does
 
-### Using an Agent (2 minutes)
-1. **Browse**: Views agent catalog with prices and descriptions
-2. **Select**: Clicks on desired agent (e.g., "Research Agent")
-3. **Input**: Enters query or data
-4. **Payment**: Clicks "Execute & Pay"
-5. **Verify**: Sees HTTP 402 payment requirement
-6. **Sign**: Signs payment with wallet (or uses mock in demo)
-7. **Execute**: Receives agent response
-8. **Confirm**: Sees transaction hash and payment confirmation
+Universal Agent Wallet provides **automatic x402 payment handling** for any HTTP API:
 
-### Building with Agents (10 minutes)
-1. **Integrate**: Adds x402 client to their application
-2. **Configure**: Sets up agent endpoints and prices
-3. **Deploy**: Deploys their own agent to the hub
-4. **Monetize**: Receives payments for agent services
-5. **Monitor**: Views transaction history and earnings
+1. **Call any API** → Get 402 Payment Required
+2. **SDK automatically signs payment** → Sends transaction on Avalanche
+3. **Retries request with payment proof** → Get your result
 
-## 📋 Feature Analysis (MoSCoW)
+**No complex integration. No payment forms. Just call APIs and pay automatically.**
 
-### ✅ MUST HAVE (Prototype - Delivered)
-- [x] x402 payment middleware integration
-- [x] 4 AI agents (Research, Summary, Translate, Code Review)
-- [x] HTTP 402 payment flow implementation
-- [x] Agent catalog UI with pricing
-- [x] Payment visualization and flow display
-- [x] Mock payment support for testing
-- [x] Responsive design (mobile, tablet, desktop)
-- [x] Dark theme optimized for Web3
-- [x] Error handling and user feedback
+## 🌟 Features
 
-### 📌 SHOULD HAVE (MVP - Target Dec 8)
-- [ ] Real AI integration (Claude/GPT API)
-- [ ] Agent-to-agent calls demonstration
-- [ ] Transaction history page
-- [ ] Wallet connection (MetaMask/RainbowKit)
-- [ ] Payment signature verification
-- [ ] Rate limiting and authentication
-- [ ] Testnet USDC integration
-- [ ] Agent registration system
-
-### 💭 COULD HAVE (Future Enhancements)
-- [ ] Reputation and ratings system
-- [ ] Multi-chain support (Base, Polygon)
-- [ ] Advanced analytics dashboard
-- [ ] Agent marketplace with discovery
-- [ ] Custom agent deployment
-- [ ] Batch payment processing
-- [ ] Webhook notifications
-
-### ❌ WON'T HAVE (Out of Scope)
-- Mobile native applications
-- Fiat on/off ramps
-- Complex governance/DAO structures
-- Token economics and staking
-- Mainnet deployment (testnet only)
-
-## 💼 Business Impact
-
-### Market Opportunity
-- **AI Agent Market**: Expected to reach $500B+ by 2030 (McKinsey)
-- **Micropayment Gap**: $0.01-$0.10 transactions currently impossible with traditional systems
-- **Target Users**: 1M+ AI developers building autonomous systems
-- **Revenue Model**: 1-2% transaction fee on agent services
-
-### Key Metrics
-- **Settlement Time**: ~2 seconds (vs 3-5 days for traditional payments)
-- **Transaction Cost**: ~$0.001 (vs $25-50 for wire transfers)
-- **Scalability**: Supports 1000s of concurrent agents
-- **Adoption Barrier**: Low (simple API, 5-minute setup)
-
-### Competitive Advantage
-- **First-mover**: Only x402 + AI agent marketplace
-- **Developer-friendly**: Works with existing Web3 wallets
-- **Avalanche-native**: Leverages sub-second finality
-- **Open-source**: Community-driven development
-
-## 🚀 Innovation
-
-### Technical Innovation
-1. **x402 Protocol Integration**: First production use of HTTP 402 for AI services
-2. **Autonomous Payments**: Agents can pay each other without human intervention
-3. **Micropayment Economics**: Makes sub-cent transactions economically viable
-4. **Instant Settlement**: Avalanche's 2-second finality enables real-time agent commerce
-
-### Business Model Innovation
-1. **Agent-to-Agent Marketplace**: New economic model for autonomous systems
-2. **Service-Based Pricing**: Pay-per-use model for AI capabilities
-3. **Decentralized Monetization**: Agents earn directly, no intermediaries
-4. **Composable AI**: Agents can chain services together
-
-### User Experience Innovation
-1. **One-Click Payment**: Simplified x402 flow for non-technical users
-2. **Mock Testing**: Test payment flows without real transactions
-3. **Visual Payment Flow**: Real-time visualization of x402 protocol
-4. **Developer-First Design**: API-first with beautiful UI
+- **🔌 Universal Compatibility** — Works with JavaScript, Python, cURL, any HTTP client
+- **⚡ Automatic Payments** — SDK handles 402 responses, signs payments, retries requests
+- **💰 True Micropayments** — Pay $0.01-$0.05 per API call with Avalanche's low fees
+- **🔗 Blockchain Verified** — Real on-chain payments with transaction proofs
+- **🎭 Mock Mode** — Test integration without real payments
+- **📱 Multi-Platform** — Browser, Node.js, Python, command line
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Frontend (Next.js + React)               │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │  Agent Catalog → Agent Detail → Payment Flow UI     │   │
-│  └──────────────────────────────────────────────────────┘   │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ HTTP + x402 Headers
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Backend (Express + TypeScript)                 │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │  x402 Middleware (Payment Verification)             │   │
-│  │  ┌────────────────────────────────────────────────┐  │   │
-│  │  │ Research │ Summary │ Translate │ Code Review  │  │   │
-│  │  │  Agent   │  Agent  │  Agent    │   Agent      │  │   │
-│  │  └────────────────────────────────────────────────┘  │   │
-│  └──────────────────────────────────────────────────────┘   │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ x402 Payment Protocol
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│         Ultravioleta DAO x402 Facilitator                   │
-│         (https://facilitator.ultravioletadao.xyz)           │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ Settlement
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│    Avalanche C-Chain (Fuji Testnet)                         │
-│    - Sub-second finality                                    │
-│    - ~$0.001 transaction cost                              │
-│    - USDC stablecoin                                        │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────┐    HTTP + x402    ┌─────────────────┐
+│   Your App      │ ──────────────── │  Paid API       │
+│                 │                   │                 │
+│ UniversalWallet │ ←── 402 ────────  │ x402 Middleware │
+│ SDK             │                   │                 │
+│                 │ ── Payment ────→  │                 │
+│                 │ ← Result ────────  │                 │
+└─────────────────┘                   └─────────────────┘
+         │                                     │
+         │                                     │
+    ┌────▼────┐                          ┌────▼────┐
+    │ Wallet  │                          │ Service │
+    │ (AVAX)  │                          │ Logic   │
+    └─────────┘                          └─────────┘
 ```
 
-## 🚀 Quick Start
+## 📚 Integration Examples
 
-### Prerequisites
-- **Node.js** 18+ ([download](https://nodejs.org/))
-- **pnpm** ([install](https://pnpm.io/installation))
-- **Avalanche Fuji testnet AVAX** (get from [faucet](https://faucet.avax.network/) with code `Hack2Build_payments`)
+### 🟨 JavaScript/TypeScript (Browser)
 
-### Installation
+```javascript
+import { UniversalWallet } from 'universal-agent-wallet';
+
+const wallet = UniversalWallet.connect();
+
+// Automatic payment handling
+async function summarizeUrl(url) {
+  const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
+    method: 'POST',
+    body: JSON.stringify({ url })
+  });
+  
+  const result = await response.json();
+  return result.data.summary;
+}
+
+// With payment flow monitoring
+const result = await wallet.summarize({ url }, (flow) => {
+  console.log(`Status: ${flow.status} - ${flow.message}`);
+});
+```
+
+### 🟢 Node.js (Server-side)
+
+```javascript
+const { UniversalWallet } = require('universal-agent-wallet');
+
+// Initialize with private key for server use
+const wallet = UniversalWallet.connect(process.env.PRIVATE_KEY);
+
+async function callPaidService() {
+  const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
+    method: 'POST',
+    body: JSON.stringify({ text: 'Long article content...' })
+  });
+  
+  return await response.json();
+}
+```
+
+### 🐍 Python
+
+```python
+import requests
+from universal_agent_wallet import UniversalWallet
+
+wallet = UniversalWallet.connect(private_key=os.getenv('PRIVATE_KEY'))
+
+def call_paid_api(data):
+    # SDK handles 402 responses automatically
+    response = wallet.call_paid_api(
+        'http://localhost:3004/api/summarize',
+        json=data
+    )
+    return response.json()
+
+result = call_paid_api({'url': 'https://example.com'})
+```
+
+### 🌐 cURL (Command Line)
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/ai-agent-hub
-cd ai-agent-hub
+# Step 1: Try API (gets 402 Payment Required)
+curl -X POST http://localhost:3004/api/summarize \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}'
 
+# Step 2: Send payment and retry with signature
+curl -X POST http://localhost:3004/api/summarize \
+  -H "Content-Type: application/json" \
+  -H "x-payment: {\"txHash\":\"0x123...\",\"from\":\"0xabc...\",\"to\":\"0x742d35...\",\"value\":\"$0.02\"}" \
+  -d '{"url": "https://example.com"}'
+```
+
+### 🤖 Telegram Bot
+
+```javascript
+const TelegramBot = require('node-telegram-bot-api');
+const { UniversalWallet } = require('universal-agent-wallet');
+
+const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+const wallet = UniversalWallet.connect(process.env.BOT_PRIVATE_KEY);
+
+bot.onText(/\/summarize (.+)/, async (msg, match) => {
+  const url = match[1];
+  
+  try {
+    const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
+      method: 'POST',
+      body: JSON.stringify({ url })
+    });
+    
+    const result = await response.json();
+    await bot.sendMessage(msg.chat.id, `📄 Summary: ${result.data.summary}`);
+  } catch (error) {
+    await bot.sendMessage(msg.chat.id, `❌ Error: ${error.message}`);
+  }
+});
+```
+
+### 🧠 Claude MCP Server
+
+```typescript
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { UniversalWallet } from 'universal-agent-wallet';
+
+const wallet = UniversalWallet.connect(process.env.MCP_PRIVATE_KEY);
+const server = new Server({ name: 'x402-summarizer', version: '1.0.0' }, { capabilities: { tools: {} } });
+
+server.setRequestHandler('tools/call', async (request) => {
+  if (request.params.name === 'summarize_url') {
+    const { url } = request.params.arguments;
+    
+    const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
+      method: 'POST',
+      body: JSON.stringify({ url })
+    });
+    
+    const result = await response.json();
+    return { content: [{ type: 'text', text: result.data.summary }] };
+  }
+});
+```
+
+## 🏃‍♂️ Running the Demo
+
+```bash
+# Clone and install
+git clone <repository>
+cd universal-agent-wallet
+pnpm install
+
+# Start backend (API server)
+cd packages/backend
+pnpm dev
+# → http://localhost:3004
+
+# Start frontend (demo interface)
+cd packages/frontend  
+pnpm dev
+# → http://localhost:3000
+```
+
+### Demo Endpoints
+
+- **Frontend Demo**: http://localhost:3000 — Interactive wallet demo
+- **API Info**: http://localhost:3004/api/info — Service documentation
+- **Paid Endpoint**: `POST http://localhost:3004/api/summarize` — $0.02 per request
+- **Health Check**: http://localhost:3004/api/health — Service status
+
+## 🔧 Building Your Own Paid API
+
+### 1. Add x402 Middleware
+
+```javascript
+import { x402Middleware } from './middleware/x402';
+
+app.post('/api/my-service', 
+  x402Middleware({
+    price: '$0.05',
+    network: 'avalanche-fuji',
+    description: 'My AI Service'
+  }, {
+    facilitatorUrl: 'https://facilitator.universal-wallet.dev',
+    walletAddress: process.env.WALLET_ADDRESS
+  }),
+  (req, res) => {
+    // Your service logic here
+    res.json({ result: 'Service completed!', payment: res.locals.x402 });
+  }
+);
+```
+
+### 2. Client Integration
+
+```javascript
+const wallet = UniversalWallet.connect();
+const response = await wallet.callPaidAPI('http://your-api.com/api/my-service', {
+  method: 'POST',
+  body: JSON.stringify({ input: 'data' })
+});
+```
+
+That's it! The SDK handles all payment logic automatically.
+
+## 🌐 Use Cases
+
+- **🤖 AI Agents** — Claude MCP servers, OpenAI plugins, custom AI tools
+- **📱 Telegram Bots** — Add paid features instantly
+- **🔧 Automation** — n8n workflows, Zapier, Python scripts, cron jobs  
+- **🌐 Web Apps** — React, Vue, Angular apps with pay-per-use APIs
+- **📊 Data APIs** — Weather, stocks, analytics with micropayments
+- **🎨 Content APIs** — Image generation, text processing, file conversion
+
+## 💰 Economics
+
+- **Payment Network**: Avalanche (ultra-low fees ~$0.001)
+- **Typical API Price**: $0.01 - $0.05 per request
+- **Payment Currency**: AVAX
+- **Settlement**: Instant (2-3 seconds)
+- **No Subscriptions**: True pay-per-use model
+
+## 🛠️ Development
+
+```bash
 # Install dependencies
 pnpm install
 
-# Create environment file
-cp .env.example .env
-
-# Edit .env with your wallet details (testnet only!)
-# WALLET_ADDRESS=0x...
-# WALLET_PRIVATE_KEY=0x...
-```
-
-### Run Locally
-
-```bash
-# Terminal 1: Start backend
-cd packages/backend
+# Run both frontend and backend
 pnpm dev
-# Backend running on http://localhost:3001
 
-# Terminal 2: Start frontend
-cd packages/frontend
-pnpm dev
-# Frontend running on http://localhost:3000
+# Build for production
+pnpm build
+
+# Run tests
+pnpm test
 ```
 
-Open **http://localhost:3000** in your browser.
-
-## 📚 API Documentation
-
-### Base URL
-```
-http://localhost:3001
-```
-
-### Endpoints
-
-#### 1. Research Agent
-```bash
-GET /agents/research?query=x402+avalanche&payment=<signature>
-```
-
-**Response (402 Payment Required):**
-```json
-{
-  "status": "payment_required",
-  "message": "Payment required to access this service",
-  "payment": {
-    "amount": "$0.02",
-    "currency": "USDC",
-    "network": "avalanche-fuji",
-    "description": "AI Research Agent - find relevant articles",
-    "facilitator": "https://facilitator.ultravioletadao.xyz",
-    "receiverAddress": "0x..."
-  }
-}
-```
-
-**Response (200 with payment):**
-```json
-{
-  "agent": "research",
-  "query": "x402 avalanche",
-  "results": [
-    {
-      "title": "What is x402 Protocol",
-      "url": "https://build.avax.network/...",
-      "summary": "x402 enables instant payments via HTTP 402..."
-    }
-  ],
-  "payment": {
-    "amount": "$0.02",
-    "currency": "USDC",
-    "txHash": "0x...",
-    "timestamp": "2025-12-01T17:00:00Z"
-  }
-}
-```
-
-#### 2. Summary Agent
-```bash
-POST /agents/summary
-Content-Type: application/json
-x-payment: <signature>
-
-{
-  "text": "Long text to summarize..."
-}
-```
-
-#### 3. Translation Agent
-```bash
-POST /agents/translate
-Content-Type: application/json
-x-payment: <signature>
-
-{
-  "text": "Hello world",
-  "targetLanguage": "Spanish"
-}
-```
-
-#### 4. Code Review Agent
-```bash
-POST /agents/code-review
-Content-Type: application/json
-x-payment: <signature>
-
-{
-  "code": "function example() { ... }"
-}
-```
-
-### x402 Payment Flow
-
-1. **Client requests service without payment**
-   ```bash
-   GET /agents/research?query=test
-   ```
-
-2. **Server responds with 402 Payment Required**
-   ```json
-   {
-     "status": "payment_required",
-     "payment": { ... }
-   }
-   ```
-
-3. **Client signs payment with x402 facilitator**
-   - Amount: $0.02
-   - Receiver: Agent wallet address
-   - Network: Avalanche Fuji
-
-4. **Client retries with payment signature**
-   ```bash
-   GET /agents/research?query=test&payment=<signature>
-   ```
-
-5. **Server verifies payment and executes**
-   ```json
-   {
-     "agent": "research",
-     "results": [ ... ],
-     "payment": {
-       "txHash": "0x...",
-       "timestamp": "..."
-     }
-   }
-   ```
-
-## 🔧 Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| **Blockchain** | Avalanche C-Chain (Fuji testnet) |
-| **Payment Protocol** | x402 (HTTP 402 status code) |
-| **Facilitator** | Ultravioleta DAO |
-| **Backend** | Node.js, Express, TypeScript |
-| **Frontend** | Next.js 14, React 18, Tailwind CSS |
-| **Icons** | Lucide React |
-| **HTTP Client** | Axios |
-
-## 📁 Project Structure
+### Project Structure
 
 ```
-ai-agent-hub/
-├── README.md                          # This file
-├── .env.example                       # Environment template
-├── package.json                       # Root workspace config
-│
+universal-agent-wallet/
 ├── packages/
-│   ├── backend/
+│   ├── backend/           # Express API server
 │   │   ├── src/
-│   │   │   ├── index.ts              # Express server entry
-│   │   │   ├── middleware/
-│   │   │   │   └── x402.ts           # x402 payment middleware
-│   │   │   ├── agents/
-│   │   │   │   ├── researchAgent.ts
-│   │   │   │   ├── summaryAgent.ts
-│   │   │   │   ├── translateAgent.ts
-│   │   │   │   └── codeReviewAgent.ts
-│   │   │   └── routes/
-│   │   │       └── agents.ts         # Agent endpoints
-│   │   ├── package.json
-│   │   └── tsconfig.json
-│   │
-│   └── frontend/
+│   │   │   ├── middleware/x402.ts    # x402 payment middleware
+│   │   │   ├── services/summarizer.ts # Demo service
+│   │   │   ├── sdk/UniversalWallet.ts # Server-side SDK
+│   │   │   └── routes/               # API routes
+│   │   └── package.json
+│   └── frontend/          # Next.js demo interface  
 │       ├── src/
-│       │   ├── app/
-│       │   │   ├── layout.tsx        # Root layout
-│       │   │   ├── page.tsx          # Home / Catalog
-│       │   │   ├── globals.css       # Global styles
-│       │   │   └── agents/
-│       │   │       └── [id]/
-│       │   │           └── page.tsx  # Agent detail page
-│       │   ├── components/
-│       │   │   ├── AgentCard.tsx     # Agent card component
-│       │   │   └── PaymentFlow.tsx   # Payment flow UI
-│       │   └── lib/
-│       │       └── x402Client.ts     # x402 client
-│       ├── package.json
-│       ├── tsconfig.json
-│       ├── next.config.js
-│       ├── tailwind.config.js
-│       └── postcss.config.js
-│
-└── docs/
-    └── PRESENTATION.md               # Presentation slides
+│       │   ├── lib/universalWallet.ts # Client-side SDK
+│       │   ├── components/           # React components
+│       │   └── app/                  # Next.js pages
+│       └── package.json
+└── README.md
 ```
 
-## 🧪 Testing
+## 🔐 Security
 
-### Test Backend Endpoints
+- **Private Keys**: Never expose private keys in frontend code
+- **Server-Side**: Use environment variables for production keys
+- **Mock Mode**: Available for testing without real payments
+- **Transaction Verification**: Real blockchain verification in production
+- **Rate Limiting**: Implement on your APIs as needed
 
-```bash
-# Test Research Agent (without payment - should get 402)
-curl http://localhost:3001/agents/research?query=test
+## 🤝 Contributing
 
-# Test with mock payment header
-curl -H "x-payment: mock" http://localhost:3001/agents/research?query=test
-
-# Test Summary Agent
-curl -X POST http://localhost:3001/agents/summary \
-  -H "Content-Type: application/json" \
-  -H "x-payment: mock" \
-  -d '{"text": "Long text here..."}'
-
-# Test Translation Agent
-curl -X POST http://localhost:3001/agents/translate \
-  -H "Content-Type: application/json" \
-  -H "x-payment: mock" \
-  -d '{"text": "Hello", "targetLanguage": "Spanish"}'
-
-# Test Code Review Agent
-curl -X POST http://localhost:3001/agents/code-review \
-  -H "Content-Type: application/json" \
-  -H "x-payment: mock" \
-  -d '{"code": "function test() {}"}'
-```
-
-### Test Frontend
-
-1. Open http://localhost:3000
-2. Click on any agent card
-3. Enter input and click "Execute & Pay"
-4. Watch the payment flow visualization
-5. See mock results
-
-## 🎨 UI Features
-
-- **Dark theme** optimized for web3
-- **Real-time payment flow** visualization
-- **Responsive design** (mobile, tablet, desktop)
-- **Smooth animations** and transitions
-- **Loading states** and error handling
-- **Transaction details** display
-
-## 🔐 Security Notes
-
-⚠️ **TESTNET ONLY**: This prototype uses testnet AVAX. Never use mainnet private keys!
-
-For production:
-- Use hardware wallets (Ledger, Trezor)
-- Implement proper key management
-- Verify x402 signatures with facilitator
-- Add rate limiting and authentication
-- Implement proper error handling
-
-## 🛣️ Roadmap
-
-### ✅ Prototype (Dec 1)
-- [x] x402 integration
-- [x] 4 mock AI agents
-- [x] Basic UI
-- [x] Payment flow visualization
-
-### 📋 MVP (Dec 8)
-- [ ] Real AI integration (Claude API)
-- [ ] Agent-to-agent calls
-- [ ] Transaction history
-- [ ] Wallet integration (RainbowKit)
-
-### 🚀 Future
-- [ ] Agent registration system
-- [ ] Reputation/ratings
-- [ ] Multi-chain support
-- [ ] Open marketplace
-- [ ] Advanced analytics
-
-## 📊 Metrics
-
-- **Settlement time**: ~2 seconds
-- **Transaction cost**: ~$0.001
-- **Supported agents**: 4
-- **Price range**: $0.01-$0.05 per request
-
-## 🔗 Resources
-
-- **Avalanche Build**: https://build.avax.network
-- **x402 Protocol**: https://x402.org
-- **Ultravioleta DAO**: https://ultravioletadao.xyz
-- **Fuji Faucet**: https://faucet.avax.network
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
+MIT License - see LICENSE file for details.
 
-## 🙋 Support
+## 🆘 Support
 
-For questions or issues:
-1. Check the [API Documentation](#-api-documentation)
-2. Review [Quick Start](#-quick-start)
-3. Open an issue on GitHub
+- **Documentation**: See `/api/info` endpoint for live API docs
+- **Issues**: GitHub Issues
+- **Discord**: [Join our community]
+- **Email**: support@universal-wallet.dev
 
 ---
 
-**Made with ❤️ for the future of agent-to-agent commerce**
+**Universal Agent Wallet** — Making AI services accessible through seamless micropayments. One SDK, any platform, instant payments.
+
+*Powered by Avalanche • x402 Protocol • Universal Payments*
