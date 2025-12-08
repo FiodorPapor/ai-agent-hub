@@ -39,3 +39,8 @@ coverage/
 
 # Misc
 .cache/
+
+# MCP tools
+mcp-tools/*/.env
+mcp-tools/*/node_modules
+mcp-tools/*/dist
