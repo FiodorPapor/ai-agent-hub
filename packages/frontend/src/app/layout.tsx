@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'AI Agent Service Hub',
-  description: 'Where AI agents hire each other - Marketplace for AI services via x402 micropayments',
+  title: 'Universal Agent Wallet',
+  description: 'Universal payment layer for AI agents and tools - x402 micropayments on Avalanche',
 }
 
 export default function RootLayout({
