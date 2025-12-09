@@ -1,0 +1,24 @@
+{
+  "name": "universal-wallet-cli-example",
+  "version": "1.0.0",
+  "description": "CLI example for Universal Agent Wallet x402 payments",
+  "main": "dist/example-cli.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/example-cli.ts",
+    "summarize": "ts-node src/example-cli.ts",
+    "dev": "ts-node src/example-cli.ts"
+  },
+  "keywords": ["cli", "x402", "payments", "avalanche", "wallet", "example"],
+  "author": "Universal Agent Wallet Team",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ethers": "^6.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3"
+  }
+}

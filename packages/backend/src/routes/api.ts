@@ -7,7 +7,7 @@ const router: Router = Router();
 // x402 configuration
 const X402_CONFIG = {
   facilitatorUrl: process.env.FACILITATOR_URL || 'https://facilitator.universal-wallet.dev',
-  walletAddress: process.env.WALLET_ADDRESS || '0x742d35Cc6634C0532925a3b8D0C9e0C0C0C0C0C0',
+  walletAddress: process.env.WALLET_ADDRESS || '0x78b15E52703DD697a021A2AA7F235A41C2279442',
   enableRealVerification: process.env.NODE_ENV === 'production'
 };
 

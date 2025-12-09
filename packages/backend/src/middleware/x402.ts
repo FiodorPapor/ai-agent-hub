@@ -118,7 +118,7 @@ export async function verifyX402Payment(
       
       const mockTransaction: PaymentTransaction = transaction || {
         txHash: generateMockTxHash(),
-        from: '0x742d35Cc6634C0532925a3b8D0C9e0C0C0C0C0C0',
+        from: '0x78b15E52703DD697a021A2AA7F235A41C2279442',
         to: options.walletAddress,
         value: priceToEther(config.price),
         timestamp: new Date().toISOString(),

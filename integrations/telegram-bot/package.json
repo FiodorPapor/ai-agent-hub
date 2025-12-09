@@ -1,0 +1,24 @@
+{
+  "name": "universal-wallet-telegram-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot integration with Universal Agent Wallet SDK for x402 payments",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "dev": "npm run build && node dist/index.js"
+  },
+  "keywords": ["telegram", "bot", "x402", "payments", "avalanche", "wallet"],
+  "author": "Universal Agent Wallet Team",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "@types/node-telegram-bot-api": "^0.64.0",
+    "typescript": "^5.3.3"
+  }
+}

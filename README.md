@@ -1,363 +1,135 @@
-# Universal Agent Wallet
+# Universal Agent Wallet – x402 Payments Demo
 
-> **🔄 Pivot Notice:** This project evolved from "AI Agent Service Hub" (closed marketplace) 
-> to "Universal Agent Wallet" (open payment infrastructure) during Hack2Build x402.
+**Universal payment infrastructure for AI agents and tools using x402 micropayments on Avalanche.**
 
-## Why the Pivot?
+## High-Level Overview
 
-| Before | After |
-|--------|-------|
-| Marketplace where our agents pay our agents | SDK that ANY system can use |
-| Limited to 4 built-in agents | Works with Claude MCP, Telegram, Python, etc. |
-| Closed ecosystem | Universal infrastructure |
+**x402** is the HTTP 402 Payment Required standard that enables pay-per-request APIs. Universal Agent Wallet SDK provides seamless payment handling for any system that needs to make paid API calls.
 
-**The real gap isn't another agent marketplace — it's payment infrastructure for the entire AI ecosystem.**
+**One API + One Wallet + Three Integrations**: Backend with x402 endpoint, Universal Wallet SDK, and ready-to-use integrations for Claude MCP, Telegram bots, and CLI tools.
 
----
+## Key Features
 
-**Universal payment layer for any AI system** — Claude MCP, Telegram bots, Python scripts, n8n workflows, and more.
+- **Pay-per-request API with x402** - HTTP 402 Payment Required standard implementation
+- **Universal Agent Wallet SDK** - Handle payments, balance checks, and wallet status
+- **Claude MCP tool integration** - Summarize websites directly in Claude Desktop
+- **Telegram bot integration** - Interactive bot with payment flow
+- **CLI example for developers** - Command-line tool demonstrating x402 payments
+- **Real Avalanche Fuji testnet payments** - Actual blockchain transactions
 
-Transform any HTTP API into a paid service with x402 micropayments on Avalanche. One SDK works everywhere.
+## Architecture Overview
 
-## 🚀 Quick Start
+The system consists of five main components:
 
-```bash
-# Install the SDK
-npm install universal-agent-wallet
-# or
-pip install universal-agent-wallet
-```
+- **Backend** (`packages/backend`) - Express server with x402 endpoint `/api/summarize`
+- **Universal Wallet SDK** - Payment handling library (reused across integrations)
+- **Claude MCP Tool** (`mcp-tools/summarize-website`) - Desktop integration for Claude
+- **Telegram Bot** (`integrations/telegram-bot`) - Interactive payment bot
+- **CLI Example** (`integrations/cli-example`) - Developer demonstration tool
 
-```javascript
-// JavaScript/TypeScript
-import { UniversalWallet } from 'universal-agent-wallet';
+See [Architecture Documentation](docs/architecture.md) for detailed flow diagrams.
 
-const wallet = UniversalWallet.connect();
-const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
-  method: 'POST',
-  body: JSON.stringify({ url: 'https://example.com' })
-});
-```
+## Quickstart (Local Demo)
 
-```python
-# Python
-from universal_agent_wallet import UniversalWallet
+### Requirements
 
-wallet = UniversalWallet.connect()
-result = wallet.call_paid_api('http://localhost:3004/api/summarize', 
-                             json={'url': 'https://example.com'})
-```
+- Node.js 18+ 
+- npm or pnpm
+- Avalanche Fuji testnet AVAX ([Get free testnet AVAX](https://faucet.avax.network/))
 
-## 🎯 What It Does
+### Setup Steps
 
-Universal Agent Wallet provides **automatic x402 payment handling** for any HTTP API:
+1. **Clone and install dependencies**
+   ```bash
+   git clone <repository-url>
+   cd universal-agent-wallet
+   npm install
+   ```
 
-1. **Call any API** → Get 402 Payment Required
-2. **SDK automatically signs payment** → Sends transaction on Avalanche
-3. **Retries request with payment proof** → Get your result
+2. **Start the backend**
+   ```bash
+   cd packages/backend
+   npm run dev
+   ```
+   Expected output: `🚀 Universal Agent Wallet Backend running on port 3004`
 
-**No complex integration. No payment forms. Just call APIs and pay automatically.**
+3. **Test via CLI** (easiest way)
+   ```bash
+   cd integrations/cli-example
+   npm install
+   cp .env.example .env
+   # Edit .env and add your WALLET_PRIVATE_KEY
+   npm start -- https://example.com
+   ```
 
-## 🌟 Features
+4. **Test via Telegram Bot** (optional)
+   ```bash
+   cd integrations/telegram-bot
+   npm install
+   cp .env.example .env
+   # Edit .env and add TELEGRAM_BOT_TOKEN and WALLET_PRIVATE_KEY
+   npm start
+   ```
 
-- **🔌 Universal Compatibility** — Works with JavaScript, Python, cURL, any HTTP client
-- **⚡ Automatic Payments** — SDK handles 402 responses, signs payments, retries requests
-- **💰 True Micropayments** — Pay $0.01-$0.05 per API call with Avalanche's low fees
-- **🔗 Blockchain Verified** — Real on-chain payments with transaction proofs
-- **🎭 Mock Mode** — Test integration without real payments
-- **📱 Multi-Platform** — Browser, Node.js, Python, command line
+5. **Test via Claude MCP** (optional)
+   ```bash
+   # MCP tool is pre-configured in claude_desktop_config.json
+   # Just restart Claude Desktop and use: "summarize https://example.com"
+   ```
 
-## 🏗️ Architecture
+## How to Test the Demo
 
-```
-┌─────────────────┐    HTTP + x402    ┌─────────────────┐
-│   Your App      │ ──────────────── │  Paid API       │
-│                 │                   │                 │
-│ UniversalWallet │ ←── 402 ────────  │ x402 Middleware │
-│ SDK             │                   │                 │
-│                 │ ── Payment ────→  │                 │
-│                 │ ← Result ────────  │                 │
-└─────────────────┘                   └─────────────────┘
-         │                                     │
-         │                                     │
-    ┌────▼────┐                          ┌────▼────┐
-    │ Wallet  │                          │ Service │
-    │ (AVAX)  │                          │ Logic   │
-    └─────────┘                          └─────────┘
-```
-
-## 📚 Integration Examples
-
-### 🟨 JavaScript/TypeScript (Browser)
-
-```javascript
-import { UniversalWallet } from 'universal-agent-wallet';
-
-const wallet = UniversalWallet.connect();
-
-// Automatic payment handling
-async function summarizeUrl(url) {
-  const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
-    method: 'POST',
-    body: JSON.stringify({ url })
-  });
-  
-  const result = await response.json();
-  return result.data.summary;
-}
-
-// With payment flow monitoring
-const result = await wallet.summarize({ url }, (flow) => {
-  console.log(`Status: ${flow.status} - ${flow.message}`);
-});
-```
-
-### 🟢 Node.js (Server-side)
-
-```javascript
-const { UniversalWallet } = require('universal-agent-wallet');
-
-// Initialize with private key for server use
-const wallet = UniversalWallet.connect(process.env.PRIVATE_KEY);
-
-async function callPaidService() {
-  const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
-    method: 'POST',
-    body: JSON.stringify({ text: 'Long article content...' })
-  });
-  
-  return await response.json();
-}
-```
-
-### 🐍 Python
-
-```python
-import requests
-from universal_agent_wallet import UniversalWallet
-
-wallet = UniversalWallet.connect(private_key=os.getenv('PRIVATE_KEY'))
-
-def call_paid_api(data):
-    # SDK handles 402 responses automatically
-    response = wallet.call_paid_api(
-        'http://localhost:3004/api/summarize',
-        json=data
-    )
-    return response.json()
-
-result = call_paid_api({'url': 'https://example.com'})
-```
-
-### 🌐 cURL (Command Line)
+### Test via CLI (Easiest)
 
 ```bash
-# Step 1: Try API (gets 402 Payment Required)
-curl -X POST http://localhost:3004/api/summarize \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://example.com"}'
-
-# Step 2: Send payment and retry with signature
-curl -X POST http://localhost:3004/api/summarize \
-  -H "Content-Type: application/json" \
-  -H "x-payment: {\"txHash\":\"0x123...\",\"from\":\"0xabc...\",\"to\":\"0x742d35...\",\"value\":\"$0.02\"}" \
-  -d '{"url": "https://example.com"}'
+cd integrations/cli-example
+npm start -- https://example.com
 ```
 
-### 🤖 Telegram Bot
+**Expected output:**
+- Wallet status and balance
+- Step 1: API call → 402 Payment Required
+- Step 2: Payment execution → TX hash and Snowtrace link  
+- Step 3: Summary result
 
-```javascript
-const TelegramBot = require('node-telegram-bot-api');
-const { UniversalWallet } = require('universal-agent-wallet');
+### Test via Telegram
 
-const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
-const wallet = UniversalWallet.connect(process.env.BOT_PRIVATE_KEY);
+1. Create bot with [@BotFather](https://t.me/BotFather)
+2. Configure `.env` with `TELEGRAM_BOT_TOKEN`
+3. Send commands:
+   - `/start` - Welcome message
+   - `/balance` - Check wallet status
+   - `/summarize https://example.com` - Pay $0.02 and get summary
 
-bot.onText(/\/summarize (.+)/, async (msg, match) => {
-  const url = match[1];
-  
-  try {
-    const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
-      method: 'POST',
-      body: JSON.stringify({ url })
-    });
-    
-    const result = await response.json();
-    await bot.sendMessage(msg.chat.id, `📄 Summary: ${result.data.summary}`);
-  } catch (error) {
-    await bot.sendMessage(msg.chat.id, `❌ Error: ${error.message}`);
-  }
-});
-```
+### Test via Claude MCP (Optional)
 
-### 🧠 Claude MCP Server
+1. MCP tool pre-configured in `claude_desktop_config.json`
+2. Restart Claude Desktop
+3. Use: "summarize https://example.com" in Claude chat
 
-```typescript
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { UniversalWallet } from 'universal-agent-wallet';
-
-const wallet = UniversalWallet.connect(process.env.MCP_PRIVATE_KEY);
-const server = new Server({ name: 'x402-summarizer', version: '1.0.0' }, { capabilities: { tools: {} } });
-
-server.setRequestHandler('tools/call', async (request) => {
-  if (request.params.name === 'summarize_url') {
-    const { url } = request.params.arguments;
-    
-    const response = await wallet.callPaidAPI('http://localhost:3004/api/summarize', {
-      method: 'POST',
-      body: JSON.stringify({ url })
-    });
-    
-    const result = await response.json();
-    return { content: [{ type: 'text', text: result.data.summary }] };
-  }
-});
-```
-
-## 🏃‍♂️ Running the Demo
-
-```bash
-# Clone and install
-git clone <repository>
-cd universal-agent-wallet
-pnpm install
-
-# Start backend (API server)
-cd packages/backend
-pnpm dev
-# → http://localhost:3004
-
-# Start frontend (demo interface)
-cd packages/frontend  
-pnpm dev
-# → http://localhost:3000
-```
-
-### Demo Endpoints
-
-- **Frontend Demo**: http://localhost:3000 — Interactive wallet demo
-- **API Info**: http://localhost:3004/api/info — Service documentation
-- **Paid Endpoint**: `POST http://localhost:3004/api/summarize` — $0.02 per request
-- **Health Check**: http://localhost:3004/api/health — Service status
-
-## 🔧 Building Your Own Paid API
-
-### 1. Add x402 Middleware
-
-```javascript
-import { x402Middleware } from './middleware/x402';
-
-app.post('/api/my-service', 
-  x402Middleware({
-    price: '$0.05',
-    network: 'avalanche-fuji',
-    description: 'My AI Service'
-  }, {
-    facilitatorUrl: 'https://facilitator.universal-wallet.dev',
-    walletAddress: process.env.WALLET_ADDRESS
-  }),
-  (req, res) => {
-    // Your service logic here
-    res.json({ result: 'Service completed!', payment: res.locals.x402 });
-  }
-);
-```
-
-### 2. Client Integration
-
-```javascript
-const wallet = UniversalWallet.connect();
-const response = await wallet.callPaidAPI('http://your-api.com/api/my-service', {
-  method: 'POST',
-  body: JSON.stringify({ input: 'data' })
-});
-```
-
-That's it! The SDK handles all payment logic automatically.
-
-## 🌐 Use Cases
-
-- **🤖 AI Agents** — Claude MCP servers, OpenAI plugins, custom AI tools
-- **📱 Telegram Bots** — Add paid features instantly
-- **🔧 Automation** — n8n workflows, Zapier, Python scripts, cron jobs  
-- **🌐 Web Apps** — React, Vue, Angular apps with pay-per-use APIs
-- **📊 Data APIs** — Weather, stocks, analytics with micropayments
-- **🎨 Content APIs** — Image generation, text processing, file conversion
-
-## 💰 Economics
-
-- **Payment Network**: Avalanche (ultra-low fees ~$0.001)
-- **Typical API Price**: $0.01 - $0.05 per request
-- **Payment Currency**: AVAX
-- **Settlement**: Instant (2-3 seconds)
-- **No Subscriptions**: True pay-per-use model
-
-## 🛠️ Development
-
-```bash
-# Install dependencies
-pnpm install
-
-# Run both frontend and backend
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Run tests
-pnpm test
-```
-
-### Project Structure
+## Repository Structure
 
 ```
-universal-agent-wallet/
-├── packages/
-│   ├── backend/           # Express API server
-│   │   ├── src/
-│   │   │   ├── middleware/x402.ts    # x402 payment middleware
-│   │   │   ├── services/summarizer.ts # Demo service
-│   │   │   ├── sdk/UniversalWallet.ts # Server-side SDK
-│   │   │   └── routes/               # API routes
-│   │   └── package.json
-│   └── frontend/          # Next.js demo interface  
-│       ├── src/
-│       │   ├── lib/universalWallet.ts # Client-side SDK
-│       │   ├── components/           # React components
-│       │   └── app/                  # Next.js pages
-│       └── package.json
-└── README.md
+/packages/backend          - x402 API + Universal Wallet SDK
+/mcp-tools/summarize-website - Claude MCP tool integration  
+/integrations/telegram-bot - Telegram bot with payment flow
+/integrations/cli-example  - CLI demonstration tool
+/docs                      - Architecture & additional docs
 ```
 
-## 🔐 Security
+**Integration Documentation:**
+- [Telegram Bot Setup](integrations/telegram-bot/README.md)
+- [CLI Example Usage](integrations/cli-example/README.md)  
+- [MCP Tool Configuration](mcp-tools/summarize-website/README.md)
 
-- **Private Keys**: Never expose private keys in frontend code
-- **Server-Side**: Use environment variables for production keys
-- **Mock Mode**: Available for testing without real payments
-- **Transaction Verification**: Real blockchain verification in production
-- **Rate Limiting**: Implement on your APIs as needed
+## Tech Stack
 
-## 🤝 Contributing
+- **Backend**: Express + TypeScript
+- **Blockchain**: Avalanche Fuji + ethers.js
+- **Payments**: x402 protocol implementation
+- **Integrations**: Telegram Bot API, Claude MCP tools
+- **Demo**: Real AVAX micropayments ($0.02 per request)
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+## Hackathon Context
 
-## 📄 License
-
-MIT License - see LICENSE file for details.
-
-## 🆘 Support
-
-- **Documentation**: See `/api/info` endpoint for live API docs
-- **Issues**: GitHub Issues
-- **Discord**: [Join our community]
-- **Email**: support@universal-wallet.dev
-
----
-
-**Universal Agent Wallet** — Making AI services accessible through seamless micropayments. One SDK, any platform, instant payments.
-
-*Powered by Avalanche • x402 Protocol • Universal Payments*
+Built for **Avalanche Hack2Build: Payments x402** - demonstrating universal payment infrastructure for AI agents and tools using HTTP 402 Payment Required standard with real Avalanche blockchain transactions.

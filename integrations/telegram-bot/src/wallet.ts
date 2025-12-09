@@ -1,11 +1,8 @@
 import { ethers } from "ethers";
 
-// Avalanche Fuji Testnet
+// Avalanche Fuji Testnet configuration
 const FUJI_RPC = "https://api.avax-test.network/ext/bc/C/rpc";
 const FUJI_CHAIN_ID = 43113;
-
-// USDC contract on Fuji (или native AVAX для простоты)
-const USDC_ADDRESS = "0x5425890298aed601595a70AB815c96711a31Bc65"; // Fuji USDC
 
 export interface PaymentResult {
   success: boolean;
@@ -25,7 +22,11 @@ export interface WalletStatus {
   error?: string;
 }
 
-export class X402Wallet {
+/**
+ * Universal Agent Wallet SDK for Telegram Bot
+ * Handles x402 payments on Avalanche Fuji testnet
+ */
+export class UniversalWallet {
   private wallet: ethers.Wallet;
   private provider: ethers.JsonRpcProvider;
   private isValid: boolean = false;
@@ -34,7 +35,7 @@ export class X402Wallet {
     this.provider = new ethers.JsonRpcProvider(FUJI_RPC);
     
     try {
-      // Validate and normalize private key
+      // Validate and normalize private key format
       const normalizedKey = this.validateAndNormalizePrivateKey(privateKey);
       this.wallet = new ethers.Wallet(normalizedKey, this.provider);
       this.isValid = true;
@@ -46,41 +47,46 @@ export class X402Wallet {
 
   /**
    * Validates and normalizes private key format
+   * Accepts keys with or without 0x prefix
    */
   private validateAndNormalizePrivateKey(privateKey: string): string {
     if (!privateKey || typeof privateKey !== 'string') {
       throw new Error("Invalid private key format. Expected 64 hex characters");
     }
 
-    // Remove whitespace
+    // Remove whitespace and normalize
     const cleanKey = privateKey.trim();
-    
-    // Check if key starts with 0x
     let normalizedKey = cleanKey;
+    
     if (cleanKey.startsWith('0x')) {
       normalizedKey = cleanKey.slice(2);
     }
 
-    // Validate hex format and length
+    // Validate hex format and length (64 characters)
     if (!/^[0-9a-fA-F]{64}$/.test(normalizedKey)) {
       throw new Error("Invalid private key format. Expected 64 hex characters");
     }
 
-    // Return with 0x prefix
     return '0x' + normalizedKey;
   }
 
+  /**
+   * Get wallet address
+   */
   getAddress(): string {
     return this.wallet.address;
   }
 
+  /**
+   * Get wallet balance in AVAX
+   */
   async getBalance(): Promise<string> {
     const balance = await this.provider.getBalance(this.wallet.address);
     return ethers.formatEther(balance);
   }
 
   /**
-   * Get wallet status including balance and readiness
+   * Get comprehensive wallet status
    */
   async getWalletStatus(): Promise<WalletStatus> {
     try {
@@ -150,16 +156,20 @@ export class X402Wallet {
     }
   }
 
-  // Parse price from string like "$0.02"
-  parsePrice(priceString: string): bigint {
-    // Remove $ and convert to number
+  /**
+   * Parse price from string like "$0.02" to wei
+   * Assumes 1 AVAX ≈ $50 for testnet conversion
+   */
+  private parsePrice(priceString: string): bigint {
     const price = parseFloat(priceString.replace("$", ""));
-    // Convert to wei (assume 1 AVAX ≈ $50 for testnet)
-    // For demo: $0.02 ≈ 0.0004 AVAX
+    // Convert USD to AVAX (demo rate: $50/AVAX)
     const avaxAmount = price / 50;
     return ethers.parseEther(avaxAmount.toFixed(18));
   }
 
+  /**
+   * Execute payment transaction
+   */
   async pay(to: string, priceString: string): Promise<PaymentResult> {
     try {
       // Check balance before attempting payment
@@ -173,7 +183,7 @@ export class X402Wallet {
 
       const value = this.parsePrice(priceString);
       
-      console.error(`[Wallet] Sending ${ethers.formatEther(value)} AVAX to ${to}`);
+      console.log(`[Wallet] Sending ${ethers.formatEther(value)} AVAX to ${to}`);
       
       const tx = await this.wallet.sendTransaction({
         to: to,
@@ -181,7 +191,7 @@ export class X402Wallet {
         chainId: FUJI_CHAIN_ID,
       });
 
-      console.error(`[Wallet] Transaction sent: ${tx.hash}`);
+      console.log(`[Wallet] Transaction sent: ${tx.hash}`);
       
       // Wait for confirmation
       const receipt = await tx.wait(1);
@@ -190,7 +200,7 @@ export class X402Wallet {
         throw new Error("Transaction failed: no receipt received");
       }
 
-      console.error(`[Wallet] Transaction confirmed in block ${receipt.blockNumber}`);
+      console.log(`[Wallet] Transaction confirmed in block ${receipt.blockNumber}`);
 
       return {
         success: true,
@@ -202,7 +212,7 @@ export class X402Wallet {
     } catch (error: any) {
       console.error(`[Wallet] Payment error: ${error.message}`);
       
-      // Provide more helpful error messages
+      // Provide helpful error messages
       let errorMessage = error.message;
       if (error.code === 'INSUFFICIENT_FUNDS') {
         errorMessage = "Insufficient balance for transaction including gas fees. Get test AVAX: https://faucet.avax.network/";
@@ -219,13 +229,15 @@ export class X402Wallet {
     }
   }
 
-  // Создание подписанного payment header для x402
+  /**
+   * Create signed payment header for x402 protocol
+   */
   async createPaymentHeader(paymentDetails: {
     amount: string;
     receiverAddress: string;
     description?: string;
   }): Promise<string> {
-    // Выполняем реальный платёж
+    // Execute real payment
     const paymentResult = await this.pay(
       paymentDetails.receiverAddress,
       paymentDetails.amount
@@ -235,7 +247,7 @@ export class X402Wallet {
       throw new Error(`Payment failed: ${paymentResult.error}`);
     }
 
-    // Возвращаем JSON с данными транзакции
+    // Return JSON with transaction data for x402 verification
     return JSON.stringify({
       txHash: paymentResult.txHash,
       from: paymentResult.from,
