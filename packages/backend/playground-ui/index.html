@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Agent Wallet - Playground</title>
+    <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Universal Agent Wallet Playground</h1>
+            <p>Test Agent-to-Agent payments on Avalanche Fuji testnet</p>
+        </header>
+
+        <main>
+            <!-- Generate Keys Section -->
+            <section class="card">
+                <h2>🔑 Generate Agent Keys</h2>
+                <p>Create new random wallets for Agent A and Agent B (testnet only)</p>
+                <button id="generateKeysBtn" class="btn btn-primary">Generate Agent Keys</button>
+                
+                <div id="keysResult" class="result-section" style="display: none;">
+                    <h3>Generated Wallets</h3>
+                    <div class="wallet-info">
+                        <h4>🤖 Agent A (Payment Sender)</h4>
+                        <div class="field">
+                            <label>Address:</label>
+                            <input type="text" id="agentAAddress" readonly>
+                            <button onclick="copyToClipboard('agentAAddress')" class="btn-copy">Copy</button>
+                        </div>
+                        <div class="field">
+                            <label>Private Key:</label>
+                            <input type="text" id="agentAPrivateKey" readonly>
+                            <button onclick="copyToClipboard('agentAPrivateKey')" class="btn-copy">Copy</button>
+                        </div>
+                    </div>
+                    
+                    <div class="wallet-info">
+                        <h4>🤖 Agent B (Payment Receiver)</h4>
+                        <div class="field">
+                            <label>Address:</label>
+                            <input type="text" id="agentBAddress" readonly>
+                            <button onclick="copyToClipboard('agentBAddress')" class="btn-copy">Copy</button>
+                        </div>
+                        <div class="field">
+                            <label>Private Key:</label>
+                            <input type="text" id="agentBPrivateKey" readonly>
+                            <button onclick="copyToClipboard('agentBPrivateKey')" class="btn-copy">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="env-section">
+                        <h4>📋 Copy to .env file:</h4>
+                        <pre id="envContent"></pre>
+                        <button onclick="copyToClipboard('envContent')" class="btn-copy">Copy .env Content</button>
+                    </div>
+
+                    <div class="instructions">
+                        <h4>⚠️ Next Steps:</h4>
+                        <ol>
+                            <li>Copy the private keys to your <code>.env</code> file</li>
+                            <li>Click "Restart Backend" button below</li>
+                            <li>Fund Agent A with Fuji AVAX from: <a href="https://faucet.avax.network/" target="_blank">https://faucet.avax.network/</a></li>
+                            <li>Use only for testnet - never mainnet!</li>
+                        </ol>
+                        <div style="margin-top: 12px;">
+                            <button id="restartBackendBtn" class="btn btn-warning">📋 Show Restart Instructions</button>
+                            <button id="markSavedBtn" class="btn btn-secondary" style="margin-left: 8px;">✅ Mark as Saved</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Check Balances Section -->
+            <section class="card">
+                <h2>💰 Check Agent Balances</h2>
+                <p>View current AVAX balances on Avalanche Fuji</p>
+                <button id="checkBalancesBtn" class="btn btn-secondary">Check Balances</button>
+                
+                <div id="balancesResult" class="result-section" style="display: none;">
+                    <h3>Current Balances</h3>
+                    <div class="balance-info">
+                        <div class="agent-balance">
+                            <h4>🤖 Agent A</h4>
+                            <div class="field">
+                                <label>Address:</label>
+                                <span id="agentABalanceAddress"></span>
+                            </div>
+                            <div class="field">
+                                <label>Balance:</label>
+                                <span id="agentABalance" class="balance"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-balance">
+                            <h4>🤖 Agent B</h4>
+                            <div class="field">
+                                <label>Address:</label>
+                                <span id="agentBBalanceAddress"></span>
+                            </div>
+                            <div class="field">
+                                <label>Balance:</label>
+                                <span id="agentBBalance" class="balance"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- x402 AI Microservice Demo Section -->
+            <section class="card">
+                <h2>🤖 x402 AI Microservice Demo</h2>
+                <p>Agent A pays Agent B for an AI answer using HTTP 402 + Avalanche Fuji</p>
+                
+                <div class="input-group">
+                    <label for="aiQuestion">Question for AI:</label>
+                    <input type="text" id="aiQuestion" placeholder="¿Qué es la economía de agentes en Avalanche?" value="¿Qué es la economía de agentes en Avalanche?">
+                </div>
+                
+                <button id="runX402DemoBtn" class="btn btn-primary">Run x402 AI Demo</button>
+                
+                <div id="x402Result" class="result-section" style="display: none;">
+                    <div class="ai-answer">
+                        <h4>🧠 AI Answer</h4>
+                        <div class="answer-content">
+                            <div class="detail-row">
+                                <span class="label">Question:</span>
+                                <span id="x402Question" class="value">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Answer:</span>
+                                <div id="x402Answer" class="value answer-text">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="balance-comparison">
+                        <h4>💰 Balance Changes</h4>
+                        <div class="balance-table">
+                            <div class="balance-row header">
+                                <span class="agent-col">Agent</span>
+                                <span class="before-col">Before</span>
+                                <span class="after-col">After</span>
+                                <span class="delta-col">Change</span>
+                            </div>
+                            <div class="balance-row">
+                                <span class="agent-col">Agent A</span>
+                                <span id="x402AgentABefore" class="before-col">-</span>
+                                <span id="x402AgentAAfter" class="after-col">-</span>
+                                <span id="x402AgentADelta" class="delta-col">-</span>
+                            </div>
+                            <div class="balance-row">
+                                <span class="agent-col">Agent B</span>
+                                <span id="x402AgentBBefore" class="before-col">-</span>
+                                <span id="x402AgentBAfter" class="after-col">-</span>
+                                <span id="x402AgentBDelta" class="delta-col">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-details">
+                        <h4>💸 Payment Details</h4>
+                        <div class="detail-row">
+                            <span class="label">Amount:</span>
+                            <span id="x402PaymentAmount" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Transaction Hash:</span>
+                            <span id="x402TxHash" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Explorer Link:</span>
+                            <a id="x402ExplorerLink" href="#" target="_blank" class="explorer-link">View on Snowtrace</a>
+                        </div>
+                    </div>
+                    
+                    <div class="execution-log">
+                        <h4>📋 Execution Log</h4>
+                        <div id="x402Logs" class="log-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Website Summarizer Demo Section -->
+            <section class="card">
+                <h2>🌐 Website Summarizer with x402 Payments</h2>
+                <p>Test the MCP Tool backend: Enter any URL to get an AI-powered summary. Demonstrates autonomous payment flow.</p>
+                
+                <div class="input-group">
+                    <label for="websiteUrl">Website URL:</label>
+                    <input type="url" id="websiteUrl" placeholder="https://avalanche.org" value="https://avalanche.org">
+                </div>
+                
+                <button id="runSummarizerBtn" class="btn btn-primary">Summarize Website</button>
+                
+                <div id="summarizerResult" class="result-section" style="display: none;">
+                    <div class="summary-content">
+                        <h4>📄 Website Summary</h4>
+                        <div class="detail-row">
+                            <span class="label">URL:</span>
+                            <span id="summaryUrl" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Summary:</span>
+                            <div id="summaryText" class="value summary-text">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-details">
+                        <h4>💸 x402 Payment Details</h4>
+                        <div class="detail-row">
+                            <span class="label">Amount:</span>
+                            <span id="summaryPaymentAmount" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Transaction Hash:</span>
+                            <span id="summaryTxHash" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Explorer Link:</span>
+                            <a id="summaryExplorerLink" href="#" target="_blank" class="explorer-link">View on Snowtrace</a>
+                        </div>
+                    </div>
+
+                    <div class="metadata-details">
+                        <h4>📊 Processing Details</h4>
+                        <div class="detail-row">
+                            <span class="label">Content Length:</span>
+                            <span id="summaryContentLength" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">AI Model:</span>
+                            <span id="summaryModel" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Processed:</span>
+                            <span id="summaryTimestamp" class="value">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="execution-log">
+                        <h4>📋 Execution Log</h4>
+                        <div id="summaryLogs" class="log-content"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status/Error Section -->
+            <section id="statusSection" class="card status-card" style="display: none;">
+                <h3 id="statusTitle">Status</h3>
+                <div id="statusContent"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Universal Agent Wallet - Avalanche Fuji Testnet</p>
+            <p>⚠️ Use only for testing - never use mainnet private keys!</p>
+        </footer>
+    </div>
+
+    <script src="playground.js"></script>
+</body>
+</html>

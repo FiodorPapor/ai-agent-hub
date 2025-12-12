@@ -1,0 +1,567 @@
+/* Universal Agent Wallet Playground Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.card h2 {
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 1.5rem;
+}
+
+.card p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.btn-copy {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.btn-copy:hover {
+    background: #5a6268;
+}
+
+/* Result sections */
+.result-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.result-section h3 {
+    color: #2c3e50;
+    margin-bottom: 16px;
+}
+
+.result-section h4 {
+    color: #34495e;
+    margin: 16px 0 8px 0;
+}
+
+/* Wallet info */
+.wallet-info {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.field label {
+    font-weight: 600;
+    min-width: 100px;
+    color: #495057;
+}
+
+.field input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+    background: #f8f9fa;
+}
+
+.field span {
+    flex: 1;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    color: #495057;
+}
+
+/* Environment section */
+.env-section {
+    margin-top: 20px;
+    padding: 16px;
+    background: #2c3e50;
+    border-radius: 8px;
+    color: white;
+}
+
+.env-section h4 {
+    color: white;
+    margin-bottom: 12px;
+}
+
+.env-section pre {
+    background: #34495e;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+/* Instructions */
+.instructions {
+    margin-top: 20px;
+    padding: 16px;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+}
+
+.instructions h4 {
+    color: #856404;
+    margin-bottom: 12px;
+}
+
+.instructions ol {
+    margin-left: 20px;
+    color: #856404;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+}
+
+.instructions code {
+    background: #f1f3f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+}
+
+.instructions a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.instructions a:hover {
+    text-decoration: underline;
+}
+
+/* Balance info */
+.balance-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.agent-balance {
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.balance {
+    font-weight: 600;
+    color: #28a745;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+/* Payment info */
+.payment-info {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.payment-info a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.payment-info a:hover {
+    text-decoration: underline;
+}
+
+/* Balance comparison */
+.balances-comparison {
+    margin: 20px 0;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.balance-column {
+    text-align: center;
+}
+
+.balance-column h5 {
+    color: #495057;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.balance-column div {
+    margin-bottom: 8px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+}
+
+/* Logs section */
+.logs-section {
+    margin-top: 20px;
+}
+
+.logs-section pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Status card */
+.status-card {
+    border-left: 4px solid #dc3545;
+}
+
+.status-card.success {
+    border-left-color: #28a745;
+}
+
+.status-card.warning {
+    border-left-color: #ffc107;
+}
+
+.status-card.info {
+    border-left-color: #17a2b8;
+}
+
+#statusContent {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: white;
+    margin-top: 40px;
+    padding: 20px;
+    opacity: 0.8;
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: " ⏳";
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .balance-info,
+    .before-after {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .field {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .field label {
+        margin-bottom: 4px;
+        min-width: auto;
+    }
+    
+    .btn-copy {
+        margin-left: 0;
+        margin-top: 4px;
+        align-self: flex-start;
+    }
+}
+
+/* x402 AI Demo specific styles */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-group input[type="text"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.ai-answer {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #28a745;
+}
+
+.answer-text {
+    background: white;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    line-height: 1.6;
+    font-style: italic;
+    color: #495057;
+}
+
+.payment-details {
+    background: #fff3cd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #ffc107;
+}
+
+.execution-log {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 4px solid #6c757d;
+}
+
+.log-content {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+.balance-comparison {
+    background: #e8f5e8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #28a745;
+}
+
+.balance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+}
+
+.balance-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #d4edda;
+}
+
+.balance-row.header {
+    font-weight: bold;
+    background: #d4edda;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+.balance-row:last-child {
+    border-bottom: none;
+}
+
+.agent-col, .before-col, .after-col, .delta-col {
+    text-align: left;
+}
+
+.before-col, .after-col, .delta-col {
+    font-family: monospace;
+}
+
+.delta-col.positive {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.delta-col.negative {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.summary-content {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #007bff;
+}
+
+.summary-text {
+    font-style: italic;
+    line-height: 1.6;
+    color: #495057;
+    background: white;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+.metadata-details {
+    background: #e9ecef;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #6c757d;
+}

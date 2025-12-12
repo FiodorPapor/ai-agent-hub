@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "universal-wallet": {
+      "command": "node",
+      "args": ["/Users/Fedor/Desktop/Ava/packages/mcp-server/dist/index.js"],
+      "env": {
+        "AGENT_A_PRIVATE_KEY": "your_agent_a_private_key_here",
+        "BACKEND_URL": "http://localhost:3004"
+      }
+    }
+  }
+}

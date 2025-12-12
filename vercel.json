@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "name": "universal-agent-wallet",
+  "builds": [
+    {
+      "src": "packages/backend/dist/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "packages/frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "packages/backend/dist/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "packages/frontend/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "BACKEND_PORT": "3000"
+  },
+  "functions": {
+    "packages/backend/dist/index.js": {
+      "maxDuration": 30
+    }
+  }
+}
