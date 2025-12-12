@@ -3,22 +3,14 @@
   "name": "universal-agent-wallet",
   "builds": [
     {
-      "src": "packages/backend/dist/index.js",
+      "src": "packages/backend/package.json",
       "use": "@vercel/node"
-    },
-    {
-      "src": "packages/frontend/package.json",
-      "use": "@vercel/next"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "packages/backend/dist/index.js"
-    },
-    {
       "src": "/(.*)",
-      "dest": "packages/frontend/$1"
+      "dest": "packages/backend/dist/index.js"
     }
   ],
   "env": {
